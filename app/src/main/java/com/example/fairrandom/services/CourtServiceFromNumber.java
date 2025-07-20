@@ -1,8 +1,6 @@
 package com.example.fairrandom.services;
 
-import com.example.fairrandom.R;
 import com.example.fairrandom.beans.Court;
-import com.example.fairrandom.beans.Player;
 
 public class CourtServiceFromNumber implements  CourtSercvice{
 

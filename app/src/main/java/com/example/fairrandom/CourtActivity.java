@@ -106,46 +106,40 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
         courtSpinner.setOnItemSelectedListener(this);
 
         // generate button
-        generateButton.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // finish current game and generate new one
-                // check if a game is being played
-                if (courts[currentCourt].getPlayers() != null){
-                    // finish game
-                    // update game totals
-                    for (Player player:courts[currentCourt].getPlayers()
-                    ) {
-                        player.finishGame();
-                        // update players list
-                        updatePlayerList(player);
-                        // remove old player list if empty
-                    }
-                    // remove empty lists from map
-                    cleanPlayersList();
+        generateButton.setOnClickListener((view -> {
+            // finish current game and generate new one
+            // check if a game is being played
+            if (courts[currentCourt].getPlayers() != null){
+                // finish game
+                // update game totals
+                for (Player player:courts[currentCourt].getPlayers()
+                ) {
+                    player.finishGame();
+                    // update players list
+                    updatePlayerList(player);
+                    // remove old player list if empty
                 }
-                // start new game
-                // generate players
-                courts[currentCourt].setPlayers(playerGeneratorService.generateCourtPlayers(playersAvailable));
-                //update available Players
-                for (Player player: courts[currentCourt].getPlayers()
-                     ) {
-                    playersAvailable.remove(player);
-                }
-                //update court
-                updateCourt();
+                // remove empty lists from map
+                cleanPlayersList();
             }
+            // start new game
+            // generate players
+            courts[currentCourt].setPlayers(playerGeneratorService.generateCourtPlayers(playersAvailable));
+            //update available Players
+            for (Player player: courts[currentCourt].getPlayers()
+                 ) {
+                playersAvailable.remove(player);
+            }
+            //update court
+            updateCourt();
         }));
 
         // cancel button
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // set court to empty
-                courts[currentCourt].setEmpty();
-                //update court
-                updateCourt();
-            }
+        cancelButton.setOnClickListener(view -> {
+            // set court to empty
+            courts[currentCourt].setEmpty();
+            //update court
+            updateCourt();
         });
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -164,9 +158,7 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
                     tempMap.put(k,k);
                 }
                 });
-        tempMap.forEach( (k,v) -> {
-            playersAvailable.remove(v);
-        });
+        tempMap.forEach( (k,v) -> playersAvailable.remove(v));
     }
 
     private void updatePlayerList(Player player) {
@@ -176,7 +168,7 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
             playersAvailable.get(player.getGamesPlayed()).add(player);
         } else {
             // create new list list and add it to hashmap
-            playersAvailable.put(player.getGamesPlayed(), new ArrayList<Player>());
+            playersAvailable.put(player.getGamesPlayed(), new ArrayList<>());
             // add player
             playersAvailable.get(player.getGamesPlayed()).add(player);
         }
@@ -184,9 +176,7 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        //load court data from selected court to Textviews
-        // get current court
-        Court court = courts[i];
+        //load court data from selected court to court representation
         //set current court
         currentCourt = i;
         // update display

@@ -13,13 +13,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.fairrandom.beans.Player;
-import com.example.fairrandom.services.PlayerService;
-import com.example.fairrandom.services.PlayerServiceFromNumber;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-
 public class SetupActivity extends AppCompatActivity {
 
     // create view variables
@@ -40,23 +33,20 @@ public class SetupActivity extends AppCompatActivity {
         errorMessageTextView = findViewById(R.id.errorTextView);
 
 
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Check for values in the EditTexts
-                if(inputValueIsEmpty()||inputValueLow()){
-                    // Display error message
-                    createErrorMessage();
-                } else {
-                    // get values from inputs
-                    int playerNumber = Integer.parseInt(playersEdit.getText().toString());
-                    int courtNumber = Integer.parseInt(courtEdit.getText().toString());
-                    // pass values to new activity
-                    Intent intent = new Intent(SetupActivity.this, CourtActivity.class);
-                    intent.putExtra("numberOfPlayers", playerNumber);
-                    intent.putExtra("numberOfCourts", courtNumber);
-                    startActivity(intent);
-                }
+        submitButton.setOnClickListener(view -> {
+            // Check for values in the EditTexts
+            if(inputValueIsEmpty()||inputValueLow()){
+                // Display error message
+                createErrorMessage();
+            } else {
+                // get values from inputs
+                int playerNumber = Integer.parseInt(playersEdit.getText().toString());
+                int courtNumber = Integer.parseInt(courtEdit.getText().toString());
+                // pass values to new activity
+                Intent intent = new Intent(SetupActivity.this, CourtActivity.class);
+                intent.putExtra("numberOfPlayers", playerNumber);
+                intent.putExtra("numberOfCourts", courtNumber);
+                startActivity(intent);
             }
         });
 

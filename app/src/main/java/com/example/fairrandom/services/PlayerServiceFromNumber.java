@@ -12,7 +12,7 @@ public class PlayerServiceFromNumber implements PlayerService{
         // cast to int
         int playersNumber = (int) players;
         // create List
-        ArrayList<Player> playerList = new ArrayList<Player>();
+        ArrayList<Player> playerList = new ArrayList<>();
         // populate List
         for (int i=0;i<playersNumber;i++){
             playerList.add(new Player("Player "+(i+1)));

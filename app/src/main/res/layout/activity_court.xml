@@ -115,6 +115,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/generateButton"
+            android:layout_alignParentStart="true"
+            android:layout_alignEnd="@id/centerLineVertical"
             style="@style/courtButton"
             android:text="@string/generate"/>
 
@@ -122,9 +124,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/cancelButton"
-            style="@style/courtButton"
             android:layout_alignParentEnd="true"
+            android:layout_alignStart="@id/centerLineVertical"
+            style="@style/courtButton"
             android:text="@string/cancel"/>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/centerLineVertical"
+            android:layout_centerHorizontal="true"
+            />
     </RelativeLayout>
 
 

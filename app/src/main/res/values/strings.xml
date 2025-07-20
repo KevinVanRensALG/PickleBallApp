@@ -15,4 +15,5 @@
     <string name="empty">Empty</string>
     <string name="errorPlayerNumberLow">Number of players required to be above 4.</string>
     <string name="errorCourtNumberLow">Number of courts required to be above 0.</string>
+    <string name="Start">Start</string>
 </resources>

@@ -7,6 +7,7 @@ public class Court {
     public Court(String name){
         this.setName(name);
     }
+
     public Court(String name, String playerName){
         this.setName(name);
         this.setPlayers(new Player[3]);

@@ -4,7 +4,7 @@ import com.example.fairrandom.beans.Court;
 
 public interface CourtSercvice {
 
-    public Court[] getCourts(Object object);
+    Court[] getCourts(Object object);
 
-    public String[] getCourtnames(Court[] courts);
+    String[] getCourtnames(Court[] courts);
 }

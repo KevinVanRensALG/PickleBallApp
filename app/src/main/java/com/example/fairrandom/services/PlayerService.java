@@ -6,5 +6,5 @@ import java.util.ArrayList;
 
 public interface PlayerService {
 
-    public ArrayList<Player> makePlayerList(Object players);
+    ArrayList<Player> makePlayerList(Object players);
 }

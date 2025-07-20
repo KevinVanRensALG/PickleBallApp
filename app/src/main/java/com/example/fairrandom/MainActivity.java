@@ -23,12 +23,9 @@ public class MainActivity extends AppCompatActivity {
 
         startButton = findViewById(R.id.startButton);
 
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, SetupActivity.class);
-                startActivity(intent);
-            }
+        startButton.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, SetupActivity.class);
+            startActivity(intent);
         });
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
