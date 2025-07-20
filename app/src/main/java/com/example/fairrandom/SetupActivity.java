@@ -13,8 +13,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.fairrandom.beans.Session;
+
 public class SetupActivity extends AppCompatActivity {
 
+    // create Session variable
+    Session session;
     // create view variables
     EditText playersEdit, courtEdit;
     Button submitButton;
@@ -32,6 +36,11 @@ public class SetupActivity extends AppCompatActivity {
         courtEdit = findViewById(R.id.courtNumberEditText);
         errorMessageTextView = findViewById(R.id.errorTextView);
 
+        // get intent
+        Intent intent = getIntent();
+
+        // set Session
+        session = intent.getParcelableExtra("session");
 
         submitButton.setOnClickListener(view -> {
             // Check for values in the EditTexts
@@ -43,10 +52,11 @@ public class SetupActivity extends AppCompatActivity {
                 int playerNumber = Integer.parseInt(playersEdit.getText().toString());
                 int courtNumber = Integer.parseInt(courtEdit.getText().toString());
                 // pass values to new activity
-                Intent intent = new Intent(SetupActivity.this, CourtActivity.class);
-                intent.putExtra("numberOfPlayers", playerNumber);
-                intent.putExtra("numberOfCourts", courtNumber);
-                startActivity(intent);
+                Intent nextintent = new Intent(SetupActivity.this, CourtActivity.class);
+                nextintent.putExtra("numberOfPlayers", playerNumber);
+                nextintent.putExtra("numberOfCourts", courtNumber);
+                nextintent.putExtra("session", session);
+                startActivity(nextintent);
             }
         });
 

@@ -6,39 +6,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SetupActivity"
-    android:background="?attr/background">
+    android:background="?attr/background"
+    android:padding="10dp">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ListLayout"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@id/topOfInputBow"
+        android:background="@color/white">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/playersList"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/topOfInputBow"
+        android:layout_alignTop="@id/inputbox"/>
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/inputbox"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_above="@+id/submitButton"
         android:background="@drawable/grey_light_rect">
-
-        <TextView
-            android:id="@+id/playersNumberTextView"
-            style="@style/inputBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/playersNumberPrompt" />
-
-        <EditText
-            android:id="@+id/playersNumberEditText"
-            style="@style/inputBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/playersNumberTextView"
-            android:layout_alignStart="@id/playersNumberTextView"
-            android:layout_alignEnd="@id/playersNumberTextView"
-            android:hint="@string/playersInputHint"
-            android:inputType="number" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/courtNumberTextView"
-            android:layout_below="@id/playersNumberEditText"
             style="@style/inputBox"
             android:text="@string/courtNumberPrompt"/>
 
@@ -53,17 +57,16 @@
             style="@style/inputBox"
             android:hint="@string/courtInputHint"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/submitButton"
-            android:layout_below="@id/courtNumberEditText"
-            android:layout_centerHorizontal="true"
-            style="@style/inputBox"
-            android:text="@string/submit"/>
-
-
     </RelativeLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/submitButton"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        style="@style/inputBox"
+        android:text="@string/submit"/>
 
     <TextView
         android:id="@+id/errorTextView"
