@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SetupActivity"
+    android:background="?attr/background">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/inputbox"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/grey_light_rect">
+
+        <TextView
+            android:id="@+id/playersNumberTextView"
+            style="@style/inputBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/playersNumberPrompt" />
+
+        <EditText
+            android:id="@+id/playersNumberEditText"
+            style="@style/inputBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/playersNumberTextView"
+            android:layout_alignStart="@id/playersNumberTextView"
+            android:layout_alignEnd="@id/playersNumberTextView"
+            android:hint="@string/playersInputHint"
+            android:inputType="number" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/courtNumberTextView"
+            android:layout_below="@id/playersNumberEditText"
+            style="@style/inputBox"
+            android:text="@string/courtNumberPrompt"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/courtNumberEditText"
+            android:inputType="number"
+            android:layout_below="@id/courtNumberTextView"
+            android:layout_alignStart="@id/courtNumberTextView"
+            android:layout_alignEnd="@id/courtNumberTextView"
+            style="@style/inputBox"
+            android:hint="@string/courtInputHint"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/submitButton"
+            android:layout_below="@id/courtNumberEditText"
+            android:layout_centerHorizontal="true"
+            style="@style/inputBox"
+            android:text="@string/submit"/>
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/errorTextView"
+        style="@style/errorMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/inputbox"
+        android:layout_centerHorizontal="true"/>
+
+
+
+</RelativeLayout>

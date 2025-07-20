@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">FairRandom</string>
+    <string name="playersInputHint">4</string>
+    <string name="playersNumberPrompt">How many players?</string>
+    <string name="courtNumberPrompt">How many courts?</string>
+    <string name="courtInputHint">1</string>
+    <string name="submit">Submit</string>
+    <string name="error">Error:</string>
+    <string name="errorPlayerNumber">Number of players not entered.</string>
+    <string name="errorCourtNumber">Number of courts not entered.</string>
+    <string name="finish">Finish</string>
+    <string name="generate">Generate</string>
+    <string name="cancel">Cancel</string>
+    <string name="court">Court:</string>
+    <string name="empty">Empty</string>
+    <string name="errorPlayerNumberLow">Number of players required to be above 4.</string>
+    <string name="errorCourtNumberLow">Number of courts required to be above 0.</string>
+</resources>
