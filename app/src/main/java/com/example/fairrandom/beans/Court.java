@@ -1,6 +1,11 @@
 package com.example.fairrandom.beans;
 
-public class Court {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+public class Court implements Parcelable {
     private String name;
     private Player[] players;
 
@@ -43,5 +48,33 @@ public class Court {
 
     public void setEmpty(){
         this.setPlayers(null);
+    }
+
+    protected Court(Parcel in) {
+        name = in.readString();
+        players = in.createTypedArray(Player.CREATOR);
+    }
+
+    public static final Creator<Court> CREATOR = new Creator<Court>() {
+        @Override
+        public Court createFromParcel(Parcel in) {
+            return new Court(in);
+        }
+
+        @Override
+        public Court[] newArray(int size) {
+            return new Court[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(name);
+        parcel.writeTypedArray(players, i);
     }
 }

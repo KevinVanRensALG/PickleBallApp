@@ -1,0 +1,14 @@
+-- Current Branch Sessions --
+
+-- Goals --
+- Create sessions that have a list of players and a list of courts
+- Have base app read session data to function
+-- Update Start activity to create session
+-- Update Setup activity to populate session
+- Update Setup activity to take player names
+- Player list activity to view players in session
+- Add late arriving players to session
+- Remove players from player list
+- Change courts number
+
+-- Current state --

@@ -10,6 +10,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.fairrandom.beans.Session;
+
 public class MainActivity extends AppCompatActivity {
 
     Button startButton;
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         startButton.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, SetupActivity.class);
+            intent.putExtra("session", new Session());
             startActivity(intent);
         });
 
