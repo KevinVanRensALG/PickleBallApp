@@ -12,10 +12,12 @@ public class Session  implements Parcelable {
     private ArrayList<Player> players;
 
     private  ArrayList<Court> courts;
+    private int leastGamesPlayed;
 
    public Session(){
         players = new ArrayList<>();
         courts = new ArrayList<>();
+        leastGamesPlayed = 0;
     }
 
     public ArrayList<Player> getPlayers() {
@@ -68,5 +70,37 @@ public class Session  implements Parcelable {
     public void writeToParcel(@NonNull Parcel parcel, int i) {
         parcel.writeTypedList(players);
         parcel.writeTypedList(courts);
+    }
+
+    public ArrayList<String> getPlayerNames() {
+        // create return list
+        ArrayList<String> playernames = new ArrayList<>();
+        //populate list
+        for (Player player:players
+             ) {
+            playernames.add(player.getName());
+        }
+        // return list
+        return playernames;
+    }
+
+    public ArrayList<String> getCourtNames() {
+        // create return list
+        ArrayList<String> courtnames = new ArrayList<>();
+        //populate list
+        for (Court court:courts
+        ) {
+            courtnames.add(court.getName());
+        }
+        // return list
+        return courtnames;
+    }
+
+    public int getLeastGamesPlayed() {
+        return leastGamesPlayed;
+    }
+
+    public void setLeastGamesPlayed(int leastGamesPlayed) {
+        this.leastGamesPlayed = leastGamesPlayed;
     }
 }

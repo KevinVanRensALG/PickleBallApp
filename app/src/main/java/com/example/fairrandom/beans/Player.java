@@ -14,6 +14,11 @@ public class Player implements Parcelable {
         this.setGamesPlayed(0);
     }
 
+    public Player(String name, int leastGamesPlayed) {
+        this.setName(name);
+        this.setGamesPlayed(leastGamesPlayed);
+    }
+
     public String getName() {
         return name;
     }

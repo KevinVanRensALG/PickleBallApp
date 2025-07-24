@@ -10,18 +10,44 @@
     android:padding="10dp">
 
     <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/newPlayerLayout"
+        android:background="@drawable/grey_light_rect"
+        android:padding="10dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/newPlayerEditText"
+            style="@style/inputBox"
+            android:hint="@string/newPlayerName"
+            android:inputType="textPersonName"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/newPlayerButton"
+            android:layout_below="@+id/newPlayerEditText"
+            android:text="@string/newPlayer"
+            style="@style/inputBox"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ListLayout"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignBottom="@id/topOfInputBow"
+        android:layout_above="@id/errorTextView"
+        android:layout_below="@+id/newPlayerLayout"
         android:background="@color/white">
 
         <ListView
+            android:id="@+id/playersList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/playersList"/>
+            android:layout_height="match_parent" />
 
     </RelativeLayout>
 
@@ -29,12 +55,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/topOfInputBow"
-        android:layout_alignTop="@id/inputbox"/>
+        android:layout_alignTop="@id/courtInputBox"/>
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/inputbox"
+        android:id="@+id/courtInputBox"
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/submitButton"
         android:background="@drawable/grey_light_rect">
@@ -71,9 +97,9 @@
     <TextView
         android:id="@+id/errorTextView"
         style="@style/errorMessage"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/inputbox"
+        android:layout_above="@id/courtInputBox"
         android:layout_centerHorizontal="true"/>
 
 

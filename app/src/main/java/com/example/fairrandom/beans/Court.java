@@ -9,6 +9,10 @@ public class Court implements Parcelable {
     private String name;
     private Player[] players;
 
+    public Court(){
+        this.setName(null);
+        this.setPlayers(new Player[4]);
+    }
     public Court(String name){
         this.setName(name);
     }

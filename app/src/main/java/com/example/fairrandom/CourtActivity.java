@@ -17,16 +17,16 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.fairrandom.beans.Court;
 import com.example.fairrandom.beans.Player;
-import com.example.fairrandom.services.CourtSercvice;
-import com.example.fairrandom.services.CourtServiceFromNumber;
+import com.example.fairrandom.beans.Session;
 import com.example.fairrandom.services.FairRandomCourtGeneratorService;
-import com.example.fairrandom.services.PlayerService;
-import com.example.fairrandom.services.PlayerServiceFromNumber;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class CourtActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+
+    // session variable
+    Session session;
 
     // get views
     Spinner courtSpinner;
@@ -34,16 +34,14 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
     TextView playerOneTextVew, playerTwoTextView, playerThreeTextVew, playerFourTextVew;
 
     // create Services
-    PlayerService playerService;
-    CourtSercvice courtSercvice;
     FairRandomCourtGeneratorService playerGeneratorService;
 
     // create List
     ArrayList<Player> playersAttending;
+    ArrayList<Court> courts;
     // create HashMap
     HashMap<Integer, ArrayList<Player>> playersAvailable;
     // create Arrays
-    Court[] courts;
     // Current court variable
     int currentCourt;
 
@@ -53,6 +51,17 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_court);
+
+
+        // set Session
+        // get intent
+        Intent intent = getIntent();
+        try {
+            session = intent.getParcelableExtra("session");
+        } catch (Exception e) {
+            Intent nextintent = new Intent(this, MainActivity.class);
+            startActivity(nextintent);
+        }
 
         // set view variables
         courtSpinner = findViewById(R.id.courtSelectSpinner);
@@ -66,8 +75,6 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
         playerFourTextVew = findViewById(R.id.playerFourTextView);
 
         // set Services
-        playerService = new PlayerServiceFromNumber();
-        courtSercvice = new CourtServiceFromNumber();
         playerGeneratorService = new FairRandomCourtGeneratorService();
 
         // set current court
@@ -76,20 +83,15 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
         //set HashMap
         playersAvailable = new HashMap<>();
 
-        // get intent
-        Intent intent = getIntent();
-        // get values passed
-        int playerNumber = intent.getIntExtra("numberOfPlayers",4);
-        int courtNumber = intent.getIntExtra("numberOfCourts",1);
         // set Arrays
-        playersAttending = playerService.makePlayerList(playerNumber);
-        courts = courtSercvice.getCourts(courtNumber);
+        playersAttending = session.getPlayers();
+        courts = session.getCourts();
 
         // populate HashMap
         playersAvailable.put(0,playersAttending);
 
         //create Array for spinner adapter
-        String[] courtsNames = courtSercvice.getCourtnames(courts);
+        ArrayList<String> courtsNames = session.getCourtNames();
 
         // display populate spinner
             // create adapter
@@ -109,10 +111,10 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
         generateButton.setOnClickListener((view -> {
             // finish current game and generate new one
             // check if a game is being played
-            if (courts[currentCourt].getPlayers() != null){
+            if (courts.get(currentCourt).getPlayers() != null){
                 // finish game
                 // update game totals
-                for (Player player:courts[currentCourt].getPlayers()
+                for (Player player:courts.get(currentCourt).getPlayers()
                 ) {
                     player.finishGame();
                     // update players list
@@ -124,9 +126,9 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
             }
             // start new game
             // generate players
-            courts[currentCourt].setPlayers(playerGeneratorService.generateCourtPlayers(playersAvailable));
+            courts.get(currentCourt).setPlayers(playerGeneratorService.generateCourtPlayers(playersAvailable));
             //update available Players
-            for (Player player: courts[currentCourt].getPlayers()
+            for (Player player: courts.get(currentCourt).getPlayers()
                  ) {
                 playersAvailable.remove(player);
             }
@@ -137,7 +139,12 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
         // cancel button
         cancelButton.setOnClickListener(view -> {
             // set court to empty
-            courts[currentCourt].setEmpty();
+            for (Player player:courts.get(currentCourt).getPlayers()
+            ) {
+                // update players list
+                updatePlayerList(player);
+            }
+            courts.get(currentCourt).setEmpty();
             //update court
             updateCourt();
         });
@@ -154,6 +161,9 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
         // make new hashmap
         HashMap<Integer, Integer> tempMap = new HashMap<>();
         playersAvailable.forEach( (k ,v) -> {
+            if (playersAvailable.get(k).isEmpty()){
+                session.setLeastGamesPlayed(k+1);
+            }
                 if (v.isEmpty()){
                     tempMap.put(k,k);
                 }
@@ -162,7 +172,7 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
     }
 
     private void updatePlayerList(Player player) {
-        // check for existing key in surrent player list
+        // check for existing key in current player list
         if(playersAvailable.containsKey(player.getGamesPlayed())){
             // add player to list
             playersAvailable.get(player.getGamesPlayed()).add(player);
@@ -190,7 +200,7 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
 
     private void updateCourt() {
         // get court
-        Court court = courts[currentCourt];
+        Court court = courts.get(currentCourt);
         // get player Names
         try {
             String[] courtPlayers = court.getPlayerNames();

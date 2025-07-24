@@ -9,8 +9,6 @@ import java.util.HashMap;
 public class FairRandomCourtGeneratorService implements CourtPlayerGeneratorService{
 
     private Player[] playerArray;
-    private ArrayList<Player> playersWithLeastGamesPlayed;
-    private HashMap<Player,Integer>  playersAvaiable;
     private int playerSelected;
     private int leastGamesPlayedNumber;
     @Override
