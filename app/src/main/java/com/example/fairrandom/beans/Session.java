@@ -6,16 +6,18 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Session  implements Parcelable {
 
     private ArrayList<Player> players;
-
+    private ArrayList<Player> availablePlayers;
     private  ArrayList<Court> courts;
     private int leastGamesPlayed;
 
    public Session(){
         players = new ArrayList<>();
+        availablePlayers = new ArrayList<>();
         courts = new ArrayList<>();
         leastGamesPlayed = 0;
     }
@@ -41,15 +43,22 @@ public class Session  implements Parcelable {
     }
 
     public int getPlayerCount(){
-        return this.players.size();
+       int playerCount = this.players.size();
+        for (Court court: courts
+             ) {
+            playerCount += court.getPlayerNames().length;
+        }
+       return playerCount;
     }
 
     protected Session(Parcel in) {
         players = in.createTypedArrayList(Player.CREATOR);
+        availablePlayers = in.createTypedArrayList(Player.CREATOR);
         courts = in.createTypedArrayList(Court.CREATOR);
+        leastGamesPlayed = in.readInt();
     }
 
-    public static final Creator<Session> CREATOR = new Creator<Session>() {
+    public static final Creator<Session> CREATOR = new Creator<>() {
         @Override
         public Session createFromParcel(Parcel in) {
             return new Session(in);
@@ -69,7 +78,9 @@ public class Session  implements Parcelable {
     @Override
     public void writeToParcel(@NonNull Parcel parcel, int i) {
         parcel.writeTypedList(players);
+        parcel.writeTypedList(availablePlayers);
         parcel.writeTypedList(courts);
+        parcel.writeInt(leastGamesPlayed);
     }
 
     public ArrayList<String> getPlayerNames() {
@@ -79,6 +90,10 @@ public class Session  implements Parcelable {
         for (Player player:players
              ) {
             playernames.add(player.getName());
+        }
+        for (Court court:courts
+             ) {
+            playernames.addAll(Arrays.asList(court.getPlayerNames()));
         }
         // return list
         return playernames;
@@ -102,5 +117,13 @@ public class Session  implements Parcelable {
 
     public void setLeastGamesPlayed(int leastGamesPlayed) {
         this.leastGamesPlayed = leastGamesPlayed;
+    }
+
+    public ArrayList<Player> getAvailablePlayers() {
+        return availablePlayers;
+    }
+
+    public void setAvailablePlayers(ArrayList<Player> availablePlayers) {
+        this.availablePlayers = availablePlayers;
     }
 }

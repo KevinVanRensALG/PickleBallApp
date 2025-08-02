@@ -7,9 +7,11 @@ Done-- Update Start activity to create session
 Done-- Update Setup activity to populate session
 Done- Update Setup activity to take player names
 Done- Player list activity to view players in session - this is the setup page
-- Add navigation bar
-- Add late arriving players to session
-- Remove players from player list
-- Change courts number
+Done- Add navigation bar
+Done- Add late arriving players to session
+Done- Remove players from player list
+Done- Change courts number
+-Barcode scanning for player entry
+-Setup Listview adapter convert to Player list from String List
 
 -- Current state --

@@ -6,14 +6,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SetupActivity"
-    android:background="?attr/background"
-    android:padding="10dp">
+    android:background="?attr/background">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/newPlayerLayout"
         android:background="@drawable/grey_light_rect"
+        android:layout_below="@+id/my_toolbar"
+        android:layout_margin="5dp"
         android:padding="10dp">
 
         <EditText
@@ -42,7 +51,9 @@
         android:layout_alignParentEnd="true"
         android:layout_above="@id/errorTextView"
         android:layout_below="@+id/newPlayerLayout"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="5dp">
 
         <ListView
             android:id="@+id/playersList"
@@ -100,7 +111,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/courtInputBox"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"/>
 
 
 

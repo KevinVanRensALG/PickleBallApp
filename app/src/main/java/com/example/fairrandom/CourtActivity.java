@@ -2,6 +2,8 @@ package com.example.fairrandom;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -10,7 +12,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -88,7 +92,20 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
         courts = session.getCourts();
 
         // populate HashMap
-        playersAvailable.put(0,playersAttending);
+        //playersAvailable.put(0,playersAttending);
+        HashMap<Integer,ArrayList<Player>> tempMap = new HashMap<>();
+        for (Player player: session.getPlayers()
+             ) {
+            if (!tempMap.containsKey(player.getGamesPlayed())) {
+                tempMap.put(player.getGamesPlayed(), new ArrayList<>());
+            }
+            tempMap.get(player.getGamesPlayed()).add(player);
+        }
+        playersAvailable = tempMap;
+
+        // toolbar setup
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
 
         //create Array for spinner adapter
         ArrayList<String> courtsNames = session.getCourtNames();
@@ -96,8 +113,8 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
         // display populate spinner
             // create adapter
             ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                    this,
-                    android.R.layout.simple_spinner_item,
+                    CourtActivity.this,
+                    android.R.layout.simple_spinner_dropdown_item,
                     courtsNames
             );
             // set dropdown layout
@@ -134,6 +151,7 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
             }
             //update court
             updateCourt();
+            cancelButtonCheck();
         }));
 
         // cancel button
@@ -147,13 +165,20 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
             courts.get(currentCourt).setEmpty();
             //update court
             updateCourt();
+            cancelButtonCheck();
         });
+
+        cancelButtonCheck();
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+    private void cancelButtonCheck() {
+        cancelButton.setEnabled(!courts.get(currentCourt).isEmpty());
     }
 
     private void cleanPlayersList() {
@@ -217,5 +242,41 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
             playerFourTextVew.setText(R.string.empty);
         }
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_actions, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        // create intent
+        Intent nextintent;
+        if (item.getItemId()==R.id.toolbarActionSetup){
+            nextintent = new Intent(this, SetupActivity.class);
+        } else if (item.getItemId()==R.id.toolbarActionCourts) {
+            nextintent = new Intent(this, CourtActivity.class);
+        } else if (item.getItemId()==R.id.toolbarActionHome) {
+            nextintent = new Intent(this, MainActivity.class);
+        } else {
+            nextintent = new Intent(this, MainActivity.class);
+        }
+        // update session
+        updateSession();
+        // put the session into new intent
+        nextintent.putExtra("session", session);
+        //start new Activity
+        startActivity(nextintent);
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void updateSession() {
+        session.setCourts(courts);
+        ArrayList<Player> playersList = new ArrayList<>();
+        playersAvailable.forEach( (k ,v) -> {
+            playersList.addAll(v);
+        });
+        session.setPlayers(playersList);
     }
 }

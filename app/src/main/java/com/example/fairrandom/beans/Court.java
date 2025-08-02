@@ -43,11 +43,30 @@ public class Court implements Parcelable {
     }
 
     public String[] getPlayerNames(){
-        String[] playerNames = new String[this.players.length];
-        for(int i=0; i <this.players.length ; i++){
-            playerNames[i] = this.players[i].getName();
+        String[] playerNames = new String[4];
+        for(int i=0; i <4 ; i++){
+            try {
+                playerNames[i] = this.players[i].getName();
+            } catch (Exception e) {
+                playerNames[i] = "";
+            }
         }
         return playerNames;
+    }
+
+    public boolean isEmpty(){
+        boolean empty = false;
+        if (players!=null){
+            for (Player player: players
+            ) {
+                if(player.getName().isEmpty()){
+                    empty = true;
+                }
+            }
+        } else {
+            empty = true;
+        }
+        return empty;
     }
 
     public void setEmpty(){
@@ -59,7 +78,7 @@ public class Court implements Parcelable {
         players = in.createTypedArray(Player.CREATOR);
     }
 
-    public static final Creator<Court> CREATOR = new Creator<Court>() {
+    public static final Creator<Court> CREATOR = new Creator<>() {
         @Override
         public Court createFromParcel(Parcel in) {
             return new Court(in);

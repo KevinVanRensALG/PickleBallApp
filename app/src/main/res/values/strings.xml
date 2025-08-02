@@ -19,4 +19,9 @@
     <string name="newPlayer">Add Player</string>
     <string name="newPlayerName">Player Name</string>
     <string name="errorPlayerNameEmpty">Please enter a player name.</string>
+    <string name="setup">Setup</string>
+    <string name="courts">Courts</string>
+    <string name="Home">Home</string>
+    <string name="errorPlayerNumberLowForCourt">The number of players is too low for the number of courts.</string>
+    <string name="errorPlayerOnCourt">This player is currently on a court</string>
 </resources>
