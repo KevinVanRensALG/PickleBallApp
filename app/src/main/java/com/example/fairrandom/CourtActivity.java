@@ -161,6 +161,8 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
             ) {
                 // update players list
                 updatePlayerList(player);
+                // set player playing status
+                player.setPlaying(false);
             }
             courts.get(currentCourt).setEmpty();
             //update court

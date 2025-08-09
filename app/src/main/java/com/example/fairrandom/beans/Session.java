@@ -126,4 +126,15 @@ public class Session  implements Parcelable {
     public void setAvailablePlayers(ArrayList<Player> availablePlayers) {
         this.availablePlayers = availablePlayers;
     }
+
+    public ArrayList<Player> getALLPlayers() {
+        ArrayList<Player> playersList = new ArrayList<>(this.getPlayers());
+        for (Court court: courts
+             ) {
+            if (court.getPlayers()!= null){
+                playersList.addAll(Arrays.asList(court.getPlayers()));
+            }
+        }
+        return  playersList;
+    }
 }

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,9 +37,8 @@ public class SetupActivity extends AppCompatActivity {
     ListView playerListView;
 
     // local variables
-    ArrayList<String> playerNames, newPlayerNames;
-
-    ArrayAdapter<String> playerListAdapter;
+    ArrayList<Player> players, newPlayers;
+    ArrayAdapter<Player> playerListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,43 +72,23 @@ public class SetupActivity extends AppCompatActivity {
 
         // set up listview
         assert session != null;
-        playerNames = session.getPlayerNames();
-        playerListAdapter = new ArrayAdapter<>(this, R.layout.activity_player_list_view, playerNames);
+        players = session.getALLPlayers();
+        newPlayers = new ArrayList<>();
+        playerListAdapter = new ArrayAdapter<>(this, R.layout.activity_player_list_view, players);
         playerListView.setAdapter(playerListAdapter);
         // set on item click listener to remove players
         playerListView.setOnItemClickListener((adapterView, view, i, l) -> {
+            // remove selected player from players
             // check if player is playing
-            boolean playerOnCourt = false;
-            for (Court court: session.getCourts()
-            ) {
-                if (court.getPlayers() != null){
-                    for (Player player: court.getPlayers()
-                    ) {
-                        if (player.getName().equals(playerNames.get(i))){
-                            Toast toast = Toast.makeText(SetupActivity.this, getString(R.string.errorPlayerOnCourt), Toast.LENGTH_LONG);
-                            toast.show();
-                            playerOnCourt = true;
-                            break;
-                        }
-                    }
-                }
+            if(players.get(i).isPlaying()){
+                Toast toast = Toast.makeText(SetupActivity.this, getString(R.string.errorPlayerOnCourt), Toast.LENGTH_LONG);
+                toast.show();
+            } else {
+                session.getPlayers().remove(players.get(i));
+                players.remove(i);
             }
-            if (!playerOnCourt){
-                // remove from session list
-                for (Player player: session.getPlayers()
-                ) {
-                    if (player.getName().equals(playerNames.get(i))){
-                        session.getPlayers().remove(player);
-                        break;
-                    }
-                }
-                newPlayerNames.remove(playerNames.get(i));
-                // remove from adapter list
-                playerNames.remove(i);
-                playerNames.trimToSize();
-                // update ListView
-                playerListAdapter.notifyDataSetChanged();
-            }
+            // update ListView
+            playerListAdapter.notifyDataSetChanged();
         });
 
         // set courts number
@@ -120,15 +98,14 @@ public class SetupActivity extends AppCompatActivity {
             courtEdit.setText(String.valueOf(session.getCourtCount()));
         }
 
-        newPlayerNames = new ArrayList<>();
         // add player button
         newPlayerButton.setOnClickListener(view -> {
             // check if name input is empty
             if (!newPlayerEdit.getText().toString().isEmpty()){
                 // if not add player name to player list
-                playerNames.add(newPlayerEdit.getText().toString());
-                // add player name to new player name list
-                newPlayerNames.add(newPlayerEdit.getText().toString());
+                players.add(new Player(newPlayerEdit.getText().toString(),session.getLeastGamesPlayed()));
+                // update new players list
+                newPlayers.add(new Player(newPlayerEdit.getText().toString(),session.getLeastGamesPlayed()));
                 // update ListView
                 playerListAdapter.notifyDataSetChanged();
                 // clear text
@@ -167,13 +144,9 @@ public class SetupActivity extends AppCompatActivity {
                     }
                     session.setCourts(tempList);
                 }
-                session.setCourts(courtsList);
                 // add new players to session
-                for (String playerName:newPlayerNames
-                     ) {
-                    session.getPlayers().add(new Player(playerName, session.getLeastGamesPlayed()));
-                    session.getAvailablePlayers().add(new Player(playerName));
-                }
+                session.getPlayers().addAll(newPlayers);
+                session.setCourts(courtsList);
                 // create new intent
                 Intent nextintent = new Intent(SetupActivity.this, CourtActivity.class);
                 // put the session into new intent
@@ -225,13 +198,13 @@ public class SetupActivity extends AppCompatActivity {
         // string to return
         String errorMessage;
         // check if there are less then 5 players playing
-        if(session.getPlayerCount()+newPlayerNames.size()<4){
+        if(players.size()<4){
             errorMessage = getString(R.string.errorPlayerNumberLow);
         } else {
             errorMessage = "";
         }
         try {
-            if (session.getPlayerCount()+newPlayerNames.size()<(4*Integer.parseInt(courtEdit.getText().toString()))){
+            if (players.size()<(4*Integer.parseInt(courtEdit.getText().toString()))){
                 errorMessage = getString(R.string.errorPlayerNumberLowForCourt);
             }
         } catch (Exception e) {
