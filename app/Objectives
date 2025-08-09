@@ -1,0 +1,17 @@
+-- Current Branch Sessions --
+
+-- Goals --
+Done- Create sessions that have a list of players and a list of courts
+Done- Have base app read session data to function
+Done-- Update Start activity to create session
+Done-- Update Setup activity to populate session
+Done- Update Setup activity to take player names
+Done- Player list activity to view players in session - this is the setup page
+Done- Add navigation bar
+Done- Add late arriving players to session
+Done- Remove players from player list
+Done- Change courts number
+-Barcode scanning for player entry
+Done- Setup Listview adapter convert to Player list from String List
+
+-- Current state --

@@ -7,16 +7,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CourtActivity"
-    android:background="?attr/background"
-    android:paddingStart="20dp"
-    android:paddingEnd="20dp">
+    android:background="?attr/background">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"/>
 
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/courtSelectSpinner"
+        android:spinnerMode="dropdown"
         android:minHeight="40dp"
-        android:background="@color/white"/>
+        android:background="@color/white"
+        android:layout_below="@+id/my_toolbar"
+        android:layout_margin="10dp"/>
 
 
     <LinearLayout
@@ -25,7 +34,9 @@
         android:id="@+id/courtVerticalLayout"
         android:layout_below="@+id/courtSelectSpinner"
         android:layout_above="@id/courtButtonsLayout"
-        android:paddingVertical="16dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginBottom="10dp"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -127,6 +138,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignStart="@id/centerLineVertical"
             style="@style/courtButton"
+            android:enabled="false"
             android:text="@string/cancel"/>
 
         <RelativeLayout

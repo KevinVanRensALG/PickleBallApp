@@ -9,8 +9,6 @@ import java.util.HashMap;
 public class FairRandomCourtGeneratorService implements CourtPlayerGeneratorService{
 
     private Player[] playerArray;
-    private ArrayList<Player> playersWithLeastGamesPlayed;
-    private HashMap<Player,Integer>  playersAvaiable;
     private int playerSelected;
     private int leastGamesPlayedNumber;
     @Override
@@ -51,6 +49,8 @@ public class FairRandomCourtGeneratorService implements CourtPlayerGeneratorServ
         int randomNumber = (int)(Math.random()*(max-min+1));
         // select random player
         playerArray[playerSelected] = playerMap.get(leastGamesPlayedNumber).get(randomNumber);
+        // update player's playing status
+        playerArray[playerSelected].setPlaying(true);
         // remove selected player
         playerMap.get(leastGamesPlayedNumber).remove(randomNumber);
         // increase number of selected players

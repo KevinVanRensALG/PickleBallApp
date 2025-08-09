@@ -1,9 +1,18 @@
 package com.example.fairrandom.beans;
 
-public class Court {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+public class Court implements Parcelable {
     private String name;
     private Player[] players;
 
+    public Court(){
+        this.setName(null);
+        this.setPlayers(new Player[4]);
+    }
     public Court(String name){
         this.setName(name);
     }
@@ -34,14 +43,61 @@ public class Court {
     }
 
     public String[] getPlayerNames(){
-        String[] playerNames = new String[this.players.length];
-        for(int i=0; i <this.players.length ; i++){
-            playerNames[i] = this.players[i].getName();
+        String[] playerNames = new String[4];
+        for(int i=0; i <4 ; i++){
+            try {
+                playerNames[i] = this.players[i].getName();
+            } catch (Exception e) {
+                playerNames[i] = "";
+            }
         }
         return playerNames;
     }
 
+    public boolean isEmpty(){
+        boolean empty = false;
+        if (players!=null){
+            for (Player player: players
+            ) {
+                if(player.getName().isEmpty()){
+                    empty = true;
+                }
+            }
+        } else {
+            empty = true;
+        }
+        return empty;
+    }
+
     public void setEmpty(){
         this.setPlayers(null);
+    }
+
+    protected Court(Parcel in) {
+        name = in.readString();
+        players = in.createTypedArray(Player.CREATOR);
+    }
+
+    public static final Creator<Court> CREATOR = new Creator<>() {
+        @Override
+        public Court createFromParcel(Parcel in) {
+            return new Court(in);
+        }
+
+        @Override
+        public Court[] newArray(int size) {
+            return new Court[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(name);
+        parcel.writeTypedArray(players, i);
     }
 }
