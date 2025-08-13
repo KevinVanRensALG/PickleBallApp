@@ -22,7 +22,7 @@ public class Court implements Parcelable {
         this.setPlayers(new Player[3]);
         for (Player player:this.players
         ) {
-            player.setName(playerName);
+            player.setFirstName(playerName);
         }
     }
 
@@ -46,7 +46,7 @@ public class Court implements Parcelable {
         String[] playerNames = new String[4];
         for(int i=0; i <4 ; i++){
             try {
-                playerNames[i] = this.players[i].getName();
+                playerNames[i] = this.players[i].getFirstName();
             } catch (Exception e) {
                 playerNames[i] = "";
             }
@@ -59,7 +59,7 @@ public class Court implements Parcelable {
         if (players!=null){
             for (Player player: players
             ) {
-                if(player.getName().isEmpty()){
+                if(player.getFirstName().isEmpty()){
                     empty = true;
                 }
             }

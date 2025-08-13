@@ -23,8 +23,14 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.fairrandom.beans.Court;
 import com.example.fairrandom.beans.Player;
 import com.example.fairrandom.beans.Session;
+import com.example.fairrandom.retrofit.RetrofitService;
+import com.example.fairrandom.retrofit.TimeslotAPI;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SetupActivity extends AppCompatActivity {
 
@@ -40,6 +46,11 @@ public class SetupActivity extends AppCompatActivity {
     ArrayList<Player> players, newPlayers;
     ArrayAdapter<Player> playerListAdapter;
 
+    // retrofit service variable
+    RetrofitService retrofitService;
+    // API variable
+    TimeslotAPI timeslotAPI;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +64,10 @@ public class SetupActivity extends AppCompatActivity {
         courtEdit = findViewById(R.id.courtNumberEditText);
         errorMessageTextView = findViewById(R.id.errorTextView);
         playerListView = findViewById(R.id.playersList);
+
+        // initialize retrofit service and API variables
+        retrofitService = new RetrofitService();
+        timeslotAPI = retrofitService.getRetrofit().create(TimeslotAPI.class);
 
         // toolbar setup
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
@@ -84,6 +99,7 @@ public class SetupActivity extends AppCompatActivity {
                 Toast toast = Toast.makeText(SetupActivity.this, getString(R.string.errorPlayerOnCourt), Toast.LENGTH_LONG);
                 toast.show();
             } else {
+                newPlayers.remove(players.get(i));
                 session.getPlayers().remove(players.get(i));
                 players.remove(i);
             }
@@ -102,14 +118,40 @@ public class SetupActivity extends AppCompatActivity {
         newPlayerButton.setOnClickListener(view -> {
             // check if name input is empty
             if (!newPlayerEdit.getText().toString().isEmpty()){
-                // if not add player name to player list
-                players.add(new Player(newPlayerEdit.getText().toString(),session.getLeastGamesPlayed()));
-                // update new players list
-                newPlayers.add(new Player(newPlayerEdit.getText().toString(),session.getLeastGamesPlayed()));
-                // update ListView
-                playerListAdapter.notifyDataSetChanged();
-                // clear text
-                newPlayerEdit.setText("");
+                // check if player is already signed up
+                if(!playerCheckById(Integer.parseInt(newPlayerEdit.getText().toString()))){
+                    // if not get player from API
+                    timeslotAPI.getPlayerFromTimeslotById(Integer.parseInt(newPlayerEdit.getText().toString()),2)
+                            .enqueue(new Callback<Player>() {
+                                @Override
+                                public void onResponse(Call<Player> call, Response<Player> response) {
+                                    if (response.isSuccessful()){
+                                        Player player = response.body();
+                                        player.setPlaying(false);
+                                        player.setGamesPlayed(session.getLeastGamesPlayed());
+                                        // add player to players
+                                        players.add(player);
+                                        // add player to newPlayers
+                                        newPlayers.add(player);
+                                        // update ListView
+                                        playerListAdapter.notifyDataSetChanged();
+                                        // clear TextView
+                                        newPlayerEdit.setText(null);
+                                    } else {
+                                        Toast.makeText(SetupActivity.this,response.code(),Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Player> call, Throwable t) {
+                                    Toast.makeText(SetupActivity.this,getString(R.string.PlayerNotFoundError),Toast.LENGTH_SHORT).show();
+                                    newPlayerEdit.setText(null);
+                                }
+                            });
+                } else {
+                    Toast.makeText(SetupActivity.this,getString(R.string.PlayerAlreadyOnList),Toast.LENGTH_SHORT).show();
+                    newPlayerEdit.setText(null);
+                }
             } else {
                 // if empty
                 // display error
@@ -156,11 +198,22 @@ public class SetupActivity extends AppCompatActivity {
             }
         });
 
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+    private boolean playerCheckById(int i) {
+        for (Player player:players
+             ) {
+            if (player.getId()==i){
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isErrors() {
