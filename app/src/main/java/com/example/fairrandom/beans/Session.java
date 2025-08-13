@@ -89,7 +89,7 @@ public class Session  implements Parcelable {
         //populate list
         for (Player player:players
              ) {
-            playernames.add(player.getName());
+            playernames.add(player.getFirstName());
         }
         for (Court court:courts
              ) {

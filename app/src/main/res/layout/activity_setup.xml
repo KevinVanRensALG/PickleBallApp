@@ -31,7 +31,7 @@
             android:id="@+id/newPlayerEditText"
             style="@style/inputBox"
             android:hint="@string/newPlayerName"
-            android:inputType="textPersonName"/>
+            android:inputType="number"/>
 
         <Button
             android:layout_width="match_parent"
