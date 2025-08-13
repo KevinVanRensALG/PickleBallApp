@@ -24,4 +24,6 @@
     <string name="Home">Home</string>
     <string name="errorPlayerNumberLowForCourt">The number of players is too low for the number of courts.</string>
     <string name="errorPlayerOnCourt">This player is currently on a court</string>
+    <string name="PlayerNotFoundError">Player not found for this timeslot</string>
+    <string name="PlayerAlreadyOnList">This player is already in the rotation.</string>
 </resources>
