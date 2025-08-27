@@ -4,19 +4,19 @@
 
     <item
         android:id="@+id/toolbarActionHome"
-        android:icon="@drawable/ic_action_home"
+        android:icon="@drawable/icon_24dp_home"
         android:title="@string/Home"
         app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/toolbarActionSetup"
-        android:icon="@drawable/ic_action_setup"
+        android:icon="@drawable/icon_24dp_player"
         android:title="@string/setup"
         app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/toolbarActionCourts"
-        android:icon="@drawable/ic_action_court"
+        android:icon="@drawable/icon_24dp_shuffle"
         android:title="@string/courts"
         app:showAsAction="ifRoom"/>
 

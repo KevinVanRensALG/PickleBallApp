@@ -23,6 +23,7 @@ import com.example.fairrandom.retrofit.RetrofitService;
 import com.example.fairrandom.retrofit.TimeslotAPI;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -173,9 +174,11 @@ public class TimeslotActivity extends AppCompatActivity implements AdapterView.O
 
     private void updateTimeslotDisplay(Timeslot timeslot) {
         // update start time text
-        startTimeText.setText(timeslot.getStartTime().toString());
-        // update end time text
-        endTimeText.setText((timeslot.getEndTime().toString()));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startTimeText.setText(timeslot.getStartTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
+            // update end time text
+            endTimeText.setText((timeslot.getEndTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"))));
+        }
         // update expected players number
         // make API call
         timeslotAPI.getPlayerCountFromTimeslotId(timeslot.getId())

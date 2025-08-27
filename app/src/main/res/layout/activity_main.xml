@@ -9,12 +9,23 @@
     tools:context=".MainActivity"
     android:background="?attr/background">
 
+    <ImageView
+        android:id="@+id/logoImageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/Logo"
+        android:layout_margin="10dp"
+        android:layout_above="@+id/startButton"
+        android:src="@drawable/paddle_mixer_logo"/>
+
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/startButton"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:text="@string/Start"
         android:textSize="20sp"/>
 

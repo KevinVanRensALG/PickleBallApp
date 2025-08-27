@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Timeslot implements Parcelable {
     private int id;
@@ -68,11 +69,12 @@ public class Timeslot implements Parcelable {
     @NonNull
     @Override
     public String toString() {
-        return "Timeslot{" +
-                "id=" + id +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                '}';
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return startTime.format(DateTimeFormatter.ofPattern("hh:mm a"))
+                    +" - "
+                    + endTime.format(DateTimeFormatter.ofPattern("hh:mm a")) ;
+        }
+        return "";
     }
 
     @Override
