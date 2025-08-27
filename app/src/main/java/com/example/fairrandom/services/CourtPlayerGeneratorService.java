@@ -7,5 +7,5 @@ import java.util.HashMap;
 
 public interface CourtPlayerGeneratorService {
 
-    Player[] generateCourtPlayers(HashMap<Integer, ArrayList<Player>>  playerMap);
+    Player[] generateCourtPlayers(HashMap<Integer, ArrayList<Player>> playerMap);
 }

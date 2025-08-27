@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         startButton = findViewById(R.id.startButton);
 
         startButton.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, SetupActivity.class);
+            Intent intent = new Intent(MainActivity.this, TimeslotActivity.class);
             intent.putExtra("session", new Session());
             startActivity(intent);
         });

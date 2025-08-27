@@ -13,5 +13,10 @@ Done- Remove players from player list
 Done- Change courts number
 -Barcode scanning for player entry
 Done- Setup Listview adapter convert to Player list from String List
+Done- Create Timeslot Activity for selecting what timeslot to get players for and basic information about the time slot.
+Done- Create Timeslot bean to hold timeslot information
+Done- Use retrofit to get information about timeslots
+Done- Determine rules for what timeslots a user can choose from
+
 
 -- Current state --

@@ -9,18 +9,19 @@ public class Court implements Parcelable {
     private String name;
     private Player[] players;
 
-    public Court(){
+    public Court() {
         this.setName(null);
         this.setPlayers(new Player[4]);
     }
-    public Court(String name){
+
+    public Court(String name) {
         this.setName(name);
     }
 
-    public Court(String name, String playerName){
+    public Court(String name, String playerName) {
         this.setName(name);
         this.setPlayers(new Player[3]);
-        for (Player player:this.players
+        for (Player player : this.players
         ) {
             player.setFirstName(playerName);
         }
@@ -42,9 +43,9 @@ public class Court implements Parcelable {
         this.players = players;
     }
 
-    public String[] getPlayerNames(){
+    public String[] getPlayerNames() {
         String[] playerNames = new String[4];
-        for(int i=0; i <4 ; i++){
+        for (int i = 0; i < 4; i++) {
             try {
                 playerNames[i] = this.players[i].getFirstName();
             } catch (Exception e) {
@@ -54,12 +55,12 @@ public class Court implements Parcelable {
         return playerNames;
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         boolean empty = false;
-        if (players!=null){
-            for (Player player: players
+        if (players != null) {
+            for (Player player : players
             ) {
-                if(player.getFirstName().isEmpty()){
+                if (player.getFirstName().isEmpty()) {
                     empty = true;
                 }
             }
@@ -69,7 +70,7 @@ public class Court implements Parcelable {
         return empty;
     }
 
-    public void setEmpty(){
+    public void setEmpty() {
         this.setPlayers(null);
     }
 

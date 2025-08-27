@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 public class Player implements Parcelable {
     private String firstName, lastName;
     private int gamesPlayed, id;
-    private  boolean playing;
+    private boolean playing;
 
     public Player(String firstName) {
         this.setFirstName(firstName);
@@ -50,7 +50,7 @@ public class Player implements Parcelable {
     @NonNull
     @Override
     public String toString() {
-        return firstName+" "+lastName;
+        return firstName + " " + lastName;
     }
 
     public int getGamesPlayed() {
