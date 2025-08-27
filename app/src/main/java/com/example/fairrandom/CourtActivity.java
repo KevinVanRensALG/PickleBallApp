@@ -35,7 +35,7 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
     // get views
     Spinner courtSpinner;
     Button generateButton, cancelButton;
-    TextView playerOneTextVew, playerTwoTextView, playerThreeTextVew, playerFourTextVew;
+    TextView playerOneTextVew, playerTwoTextView, playerThreeTextVew, playerFourTextVew, courtCenterTextView;
 
     // create Services
     FairRandomCourtGeneratorService playerGeneratorService;
@@ -78,6 +78,8 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
         playerThreeTextVew = findViewById(R.id.playerThreeTextView);
         playerFourTextVew = findViewById(R.id.playerFourTextView);
 
+        courtCenterTextView = findViewById(R.id.courtCenterTextView);
+
         // set Services
         playerGeneratorService = new FairRandomCourtGeneratorService();
 
@@ -92,10 +94,9 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
         courts = session.getCourts();
 
         // populate HashMap
-        //playersAvailable.put(0,playersAttending);
-        HashMap<Integer,ArrayList<Player>> tempMap = new HashMap<>();
-        for (Player player: session.getPlayers()
-             ) {
+        HashMap<Integer, ArrayList<Player>> tempMap = new HashMap<>();
+        for (Player player : session.getPlayers()
+        ) {
             if (!tempMap.containsKey(player.getGamesPlayed())) {
                 tempMap.put(player.getGamesPlayed(), new ArrayList<>());
             }
@@ -111,15 +112,15 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
         ArrayList<String> courtsNames = session.getCourtNames();
 
         // display populate spinner
-            // create adapter
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                    CourtActivity.this,
-                    android.R.layout.simple_spinner_dropdown_item,
-                    courtsNames
-            );
-            // set dropdown layout
+        // create adapter
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                CourtActivity.this,
+                android.R.layout.simple_spinner_dropdown_item,
+                courtsNames
+        );
+        // set dropdown layout
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            // set adapter
+        // set adapter
         courtSpinner.setAdapter(adapter);
         //set spinner onItemSelected
         courtSpinner.setOnItemSelectedListener(this);
@@ -128,10 +129,10 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
         generateButton.setOnClickListener((view -> {
             // finish current game and generate new one
             // check if a game is being played
-            if (courts.get(currentCourt).getPlayers() != null){
+            if (courts.get(currentCourt).getPlayers() != null) {
                 // finish game
                 // update game totals
-                for (Player player:courts.get(currentCourt).getPlayers()
+                for (Player player : courts.get(currentCourt).getPlayers()
                 ) {
                     player.finishGame();
                     // update players list
@@ -145,8 +146,8 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
             // generate players
             courts.get(currentCourt).setPlayers(playerGeneratorService.generateCourtPlayers(playersAvailable));
             //update available Players
-            for (Player player: courts.get(currentCourt).getPlayers()
-                 ) {
+            for (Player player : courts.get(currentCourt).getPlayers()
+            ) {
                 playersAvailable.remove(player);
             }
             //update court
@@ -157,7 +158,7 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
         // cancel button
         cancelButton.setOnClickListener(view -> {
             // set court to empty
-            for (Player player:courts.get(currentCourt).getPlayers()
+            for (Player player : courts.get(currentCourt).getPlayers()
             ) {
                 // update players list
                 updatePlayerList(player);
@@ -187,20 +188,20 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
         // check if the list at each key in the map is empty and if so remove it
         // make new hashmap
         HashMap<Integer, Integer> tempMap = new HashMap<>();
-        playersAvailable.forEach( (k ,v) -> {
-            if (playersAvailable.get(k).isEmpty()){
-                session.setLeastGamesPlayed(k+1);
+        playersAvailable.forEach((k, v) -> {
+            if (playersAvailable.get(k).isEmpty()) {
+                session.setLeastGamesPlayed(k + 1);
             }
-                if (v.isEmpty()){
-                    tempMap.put(k,k);
-                }
-                });
-        tempMap.forEach( (k,v) -> playersAvailable.remove(v));
+            if (v.isEmpty()) {
+                tempMap.put(k, k);
+            }
+        });
+        tempMap.forEach((k, v) -> playersAvailable.remove(v));
     }
 
     private void updatePlayerList(Player player) {
         // check for existing key in current player list
-        if(playersAvailable.containsKey(player.getGamesPlayed())){
+        if (playersAvailable.containsKey(player.getGamesPlayed())) {
             // add player to list
             playersAvailable.get(player.getGamesPlayed()).add(player);
         } else {
@@ -228,6 +229,8 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
     private void updateCourt() {
         // get court
         Court court = courts.get(currentCourt);
+        courtCenterTextView.setText(court.getName());
+        cancelButtonCheck();
         // get player Names
         try {
             String[] courtPlayers = court.getPlayerNames();
@@ -236,7 +239,7 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
             playerTwoTextView.setText(courtPlayers[1]);
             playerThreeTextVew.setText(courtPlayers[2]);
             playerFourTextVew.setText(courtPlayers[3]);
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             // set empty court
             playerOneTextVew.setText(R.string.empty);
             playerTwoTextView.setText(R.string.empty);
@@ -245,6 +248,7 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
         }
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_actions, menu);
@@ -255,11 +259,11 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         // create intent
         Intent nextintent;
-        if (item.getItemId()==R.id.toolbarActionSetup){
+        if (item.getItemId() == R.id.toolbarActionSetup) {
             nextintent = new Intent(this, SetupActivity.class);
-        } else if (item.getItemId()==R.id.toolbarActionCourts) {
+        } else if (item.getItemId() == R.id.toolbarActionCourts) {
             nextintent = new Intent(this, CourtActivity.class);
-        } else if (item.getItemId()==R.id.toolbarActionHome) {
+        } else if (item.getItemId() == R.id.toolbarActionHome) {
             nextintent = new Intent(this, MainActivity.class);
         } else {
             nextintent = new Intent(this, MainActivity.class);
@@ -276,7 +280,7 @@ public class CourtActivity extends AppCompatActivity implements AdapterView.OnIt
     private void updateSession() {
         session.setCourts(courts);
         ArrayList<Player> playersList = new ArrayList<>();
-        playersAvailable.forEach( (k ,v) -> {
+        playersAvailable.forEach((k, v) -> {
             playersList.addAll(v);
         });
         session.setPlayers(playersList);

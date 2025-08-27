@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TimeslotActivity"
+    android:background="?attr/background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/informationLayout"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
+        android:background="@drawable/grey_light_rect">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/startTimePromptText"
+            android:text="@string/StartTime"
+            style="@style/inputBox"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/startTimeText"
+            android:layout_below="@id/startTimePromptText"
+            style="@style/inputBox"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/endTimePromptText"
+            android:text="@string/EndTime"
+            android:layout_below="@id/startTimeText"
+            style="@style/inputBox"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/endTimeText"
+            android:layout_below="@id/endTimePromptText"
+            style="@style/inputBox"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/playersPromptText"
+            android:layout_below="@id/endTimeText"
+            android:text="@string/Players"
+            style="@style/inputBox"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/playersText"
+            android:layout_below="@id/playersPromptText"
+            style="@style/inputBox"/>
+
+
+        <Spinner
+            android:id="@+id/timeslotSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown"
+            android:minHeight="40dp"
+            android:background="@color/white"
+            android:layout_below="@+id/playersText"
+            android:pointerIcon="arrow"
+            android:layout_margin="10dp"/>
+
+    </RelativeLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/submitButton"
+        android:text="@string/submit"
+        android:layout_alignParentBottom="true"
+        style="@style/courtButton"/>
+
+</RelativeLayout>

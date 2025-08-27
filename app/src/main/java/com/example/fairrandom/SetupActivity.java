@@ -95,7 +95,7 @@ public class SetupActivity extends AppCompatActivity {
         playerListView.setOnItemClickListener((adapterView, view, i, l) -> {
             // remove selected player from players
             // check if player is playing
-            if(players.get(i).isPlaying()){
+            if (players.get(i).isPlaying()) {
                 Toast toast = Toast.makeText(SetupActivity.this, getString(R.string.errorPlayerOnCourt), Toast.LENGTH_LONG);
                 toast.show();
             } else {
@@ -108,7 +108,7 @@ public class SetupActivity extends AppCompatActivity {
         });
 
         // set courts number
-        if (session.getCourts().isEmpty()){
+        if (session.getCourts().isEmpty()) {
             courtEdit.setText("");
         } else {
             courtEdit.setText(String.valueOf(session.getCourtCount()));
@@ -117,15 +117,15 @@ public class SetupActivity extends AppCompatActivity {
         // add player button
         newPlayerButton.setOnClickListener(view -> {
             // check if name input is empty
-            if (!newPlayerEdit.getText().toString().isEmpty()){
+            if (!newPlayerEdit.getText().toString().isEmpty()) {
                 // check if player is already signed up
-                if(!playerCheckById(Integer.parseInt(newPlayerEdit.getText().toString()))){
+                if (!playerCheckById(Integer.parseInt(newPlayerEdit.getText().toString()))) {
                     // if not get player from API
-                    timeslotAPI.getPlayerFromTimeslotById(Integer.parseInt(newPlayerEdit.getText().toString()),2)
+                    timeslotAPI.getPlayerFromTimeslotById(Integer.parseInt(newPlayerEdit.getText().toString()), session.getTimeslot().getId())
                             .enqueue(new Callback<Player>() {
                                 @Override
                                 public void onResponse(Call<Player> call, Response<Player> response) {
-                                    if (response.isSuccessful()){
+                                    if (response.isSuccessful()) {
                                         Player player = response.body();
                                         player.setPlaying(false);
                                         player.setGamesPlayed(session.getLeastGamesPlayed());
@@ -138,48 +138,47 @@ public class SetupActivity extends AppCompatActivity {
                                         // clear TextView
                                         newPlayerEdit.setText(null);
                                     } else {
-                                        Toast.makeText(SetupActivity.this,response.code(),Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(SetupActivity.this, String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                                     }
                                 }
 
                                 @Override
                                 public void onFailure(Call<Player> call, Throwable t) {
-                                    Toast.makeText(SetupActivity.this,getString(R.string.PlayerNotFoundError),Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SetupActivity.this, getString(R.string.PlayerNotFoundError), Toast.LENGTH_SHORT).show();
                                     newPlayerEdit.setText(null);
                                 }
                             });
                 } else {
-                    Toast.makeText(SetupActivity.this,getString(R.string.PlayerAlreadyOnList),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SetupActivity.this, getString(R.string.PlayerAlreadyOnList), Toast.LENGTH_SHORT).show();
                     newPlayerEdit.setText(null);
                 }
             } else {
                 // if empty
                 // display error
-                createErrorMessage(newPlayerErrorMessage(),"");
+                createErrorMessage(newPlayerErrorMessage(), "");
             }
         });
 
 
-
         submitButton.setOnClickListener(view -> {
             // Check for at errors in inputs
-            if(!isErrors()){
+            if (!isErrors()) {
                 // add courts to session
                 // create new list of courts
                 ArrayList<Court> courtsList = session.getCourts();
-                if (Integer.parseInt(courtEdit.getText().toString())>session.getCourtCount()){
-                    for(int i = session.getCourtCount(); i<Integer.parseInt(courtEdit.getText().toString()); i++){
-                        courtsList.add(new Court(getString(R.string.court)+" "+(i+1)));
+                if (Integer.parseInt(courtEdit.getText().toString()) > session.getCourtCount()) {
+                    for (int i = session.getCourtCount(); i < Integer.parseInt(courtEdit.getText().toString()); i++) {
+                        courtsList.add(new Court(getString(R.string.court) + " " + (i + 1)));
                     }
-                } else if (Integer.parseInt(courtEdit.getText().toString())<session.getCourtCount()) {
+                } else if (Integer.parseInt(courtEdit.getText().toString()) < session.getCourtCount()) {
                     ArrayList<Court> tempList = new ArrayList<>();
                     for (int i = 0; i < session.getCourtCount(); i++) {
                         //if court remaining
-                        if (i<Integer.parseInt(courtEdit.getText().toString())){
+                        if (i < Integer.parseInt(courtEdit.getText().toString())) {
                             tempList.add(session.getCourts().get(i));
                         } else {
-                            for (Player player:session.getCourts().get(i).getPlayers()
-                                 ) {
+                            for (Player player : session.getCourts().get(i).getPlayers()
+                            ) {
                                 session.getPlayers().add(player);
                             }
                         }
@@ -207,9 +206,9 @@ public class SetupActivity extends AppCompatActivity {
     }
 
     private boolean playerCheckById(int i) {
-        for (Player player:players
-             ) {
-            if (player.getId()==i){
+        for (Player player : players
+        ) {
+            if (player.getId() == i) {
                 return true;
             }
         }
@@ -223,11 +222,11 @@ public class SetupActivity extends AppCompatActivity {
         String courtErrorMessage = getCourtErrors();
         //check if there were any errors
         // set boolean
-        boolean errors = (!playerErrorMessage.isEmpty()||!courtErrorMessage.isEmpty());
+        boolean errors = (!playerErrorMessage.isEmpty() || !courtErrorMessage.isEmpty());
         // if there were
-        if (errors){
+        if (errors) {
             //update error Message TextView
-            createErrorMessage(playerErrorMessage,courtErrorMessage);
+            createErrorMessage(playerErrorMessage, courtErrorMessage);
         }
         //return if there were errors
         return errors;
@@ -237,11 +236,11 @@ public class SetupActivity extends AppCompatActivity {
         // string to return
         String errorMessage;
         // check if there are less then 1 court being played on
-        if(courtEdit.getText().toString().isEmpty()){
+        if (courtEdit.getText().toString().isEmpty()) {
             errorMessage = getString(R.string.errorCourtNumberLow);
-        } else if (Integer.parseInt(courtEdit.getText().toString())<1) {
+        } else if (Integer.parseInt(courtEdit.getText().toString()) < 1) {
             errorMessage = getString(R.string.errorCourtNumberLow);
-        } else  {
+        } else {
             errorMessage = "";
         }
         return errorMessage;
@@ -251,13 +250,13 @@ public class SetupActivity extends AppCompatActivity {
         // string to return
         String errorMessage;
         // check if there are less then 5 players playing
-        if(players.size()<4){
+        if (players.size() < 4) {
             errorMessage = getString(R.string.errorPlayerNumberLow);
         } else {
             errorMessage = "";
         }
         try {
-            if (players.size()<(4*Integer.parseInt(courtEdit.getText().toString()))){
+            if (players.size() < (4 * Integer.parseInt(courtEdit.getText().toString()))) {
                 errorMessage = getString(R.string.errorPlayerNumberLowForCourt);
             }
         } catch (Exception e) {
@@ -268,7 +267,7 @@ public class SetupActivity extends AppCompatActivity {
 
     private String newPlayerErrorMessage() {
         // if empty
-        if (newPlayerEdit.getText().toString().isEmpty()){
+        if (newPlayerEdit.getText().toString().isEmpty()) {
             return getString(R.string.errorPlayerNameEmpty);
         }
         return "";
@@ -294,11 +293,11 @@ public class SetupActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         // create intent
         Intent nextintent;
-        if (item.getItemId()==R.id.toolbarActionSetup){
+        if (item.getItemId() == R.id.toolbarActionSetup) {
             nextintent = new Intent(this, SetupActivity.class);
-        } else if (item.getItemId()==R.id.toolbarActionCourts) {
+        } else if (item.getItemId() == R.id.toolbarActionCourts) {
             nextintent = new Intent(this, CourtActivity.class);
-        } else if (item.getItemId()==R.id.toolbarActionHome) {
+        } else if (item.getItemId() == R.id.toolbarActionHome) {
             nextintent = new Intent(this, MainActivity.class);
         } else {
             nextintent = new Intent(this, MainActivity.class);

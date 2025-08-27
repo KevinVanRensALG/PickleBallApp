@@ -8,14 +8,16 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Session  implements Parcelable {
+public class Session implements Parcelable {
 
     private ArrayList<Player> players;
     private ArrayList<Player> availablePlayers;
-    private  ArrayList<Court> courts;
+    private ArrayList<Court> courts;
     private int leastGamesPlayed;
 
-   public Session(){
+    private Timeslot timeslot;
+
+    public Session() {
         players = new ArrayList<>();
         availablePlayers = new ArrayList<>();
         courts = new ArrayList<>();
@@ -38,17 +40,25 @@ public class Session  implements Parcelable {
         this.courts = courts;
     }
 
+    public Timeslot getTimeslot() {
+        return timeslot;
+    }
+
+    public void setTimeslot(Timeslot timeslot) {
+        this.timeslot = timeslot;
+    }
+
     public int getCourtCount() {
         return this.courts.size();
     }
 
-    public int getPlayerCount(){
-       int playerCount = this.players.size();
-        for (Court court: courts
-             ) {
+    public int getPlayerCount() {
+        int playerCount = this.players.size();
+        for (Court court : courts
+        ) {
             playerCount += court.getPlayerNames().length;
         }
-       return playerCount;
+        return playerCount;
     }
 
     protected Session(Parcel in) {
@@ -56,6 +66,7 @@ public class Session  implements Parcelable {
         availablePlayers = in.createTypedArrayList(Player.CREATOR);
         courts = in.createTypedArrayList(Court.CREATOR);
         leastGamesPlayed = in.readInt();
+        timeslot = in.readParcelable(Timeslot.class.getClassLoader());
     }
 
     public static final Creator<Session> CREATOR = new Creator<>() {
@@ -81,18 +92,19 @@ public class Session  implements Parcelable {
         parcel.writeTypedList(availablePlayers);
         parcel.writeTypedList(courts);
         parcel.writeInt(leastGamesPlayed);
+        parcel.writeParcelable(timeslot, i);
     }
 
     public ArrayList<String> getPlayerNames() {
         // create return list
         ArrayList<String> playernames = new ArrayList<>();
         //populate list
-        for (Player player:players
-             ) {
+        for (Player player : players
+        ) {
             playernames.add(player.getFirstName());
         }
-        for (Court court:courts
-             ) {
+        for (Court court : courts
+        ) {
             playernames.addAll(Arrays.asList(court.getPlayerNames()));
         }
         // return list
@@ -103,7 +115,7 @@ public class Session  implements Parcelable {
         // create return list
         ArrayList<String> courtnames = new ArrayList<>();
         //populate list
-        for (Court court:courts
+        for (Court court : courts
         ) {
             courtnames.add(court.getName());
         }
@@ -129,12 +141,12 @@ public class Session  implements Parcelable {
 
     public ArrayList<Player> getALLPlayers() {
         ArrayList<Player> playersList = new ArrayList<>(this.getPlayers());
-        for (Court court: courts
-             ) {
-            if (court.getPlayers()!= null){
+        for (Court court : courts
+        ) {
+            if (court.getPlayers() != null) {
                 playersList.addAll(Arrays.asList(court.getPlayers()));
             }
         }
-        return  playersList;
+        return playersList;
     }
 }

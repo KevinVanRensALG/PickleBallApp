@@ -26,4 +26,11 @@
     <string name="errorPlayerOnCourt">This player is currently on a court</string>
     <string name="PlayerNotFoundError">Player not found for this timeslot</string>
     <string name="PlayerAlreadyOnList">This player is already in the rotation.</string>
+    <string name="Search">Search</string>
+    <string name="StartTime">Start Time:</string>
+    <string name="EndTime">End Time:</string>
+    <string name="Players">Players:</string>
+    <string name="NoPlayersFound">There were no players found for this timeslot.</string>
+    <string name="NoTimeslotsFoundNearNow">There are no timeslots starting around this time.</string>
+    <string name="NoTimeslotsSelected">No timeslot was selected.</string>
 </resources>
