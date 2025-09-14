@@ -7,6 +7,9 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Timeslot implements Parcelable {
@@ -87,5 +90,16 @@ public class Timeslot implements Parcelable {
         parcel.writeInt(id);
         parcel.writeString(startTime.toString());
         parcel.writeString(endTime.toString());
+    }
+
+    public void convertToLocalTime() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            ZonedDateTime zonedStartDateTime = startTime.atZone(ZoneId.of("UTC"));
+            ZonedDateTime zonedEndDateTime = endTime.atZone(ZoneId.of("UTC"));
+            ZonedDateTime convertedZonedStartDateTime = zonedStartDateTime.withZoneSameInstant(ZoneId.systemDefault());
+            ZonedDateTime convertedZonedEndDateTime = zonedEndDateTime.withZoneSameInstant(ZoneId.systemDefault());
+            setStartTime(convertedZonedStartDateTime.toLocalDateTime());
+            setEndTime(convertedZonedEndDateTime.toLocalDateTime());
+        }
     }
 }

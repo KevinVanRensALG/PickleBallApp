@@ -23,6 +23,7 @@ import com.example.fairrandom.retrofit.RetrofitService;
 import com.example.fairrandom.retrofit.TimeslotAPI;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -105,7 +106,7 @@ public class TimeslotActivity extends AppCompatActivity implements AdapterView.O
         timeslots = new ArrayList<>();
         // make API call to get timeslots
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            timeslotAPI.getTimeslotsNearDateTime(LocalDateTime.now())
+            timeslotAPI.getTimeslotsNearDateTime(LocalDateTime.now(ZoneOffset.UTC))
                     .enqueue(new Callback<>() {
 
                         @Override
@@ -119,6 +120,10 @@ public class TimeslotActivity extends AppCompatActivity implements AdapterView.O
                                             android.R.layout.simple_spinner_item,
                                             timeslots
                                     );
+                                    for (Timeslot timeslot: timeslots
+                                         ) {
+                                        timeslot.convertToLocalTime();
+                                    }
                                     // set dropdown layout
                                     timeslotSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
                                     // set adapter
